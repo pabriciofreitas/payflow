@@ -10,6 +10,7 @@ class SetLabelButtons extends StatelessWidget {
   final String secondaryLabel;
   final VoidCallback secondaryOnPressed;
   final bool enablePrimaryColor;
+  final bool secondaryPrimaryColor;
   const SetLabelButtons({
     Key? key,
     required this.primaryLabel,
@@ -17,12 +18,13 @@ class SetLabelButtons extends StatelessWidget {
     required this.secondaryOnPressed,
     required this.secondaryLabel,
     this.enablePrimaryColor = false,
+    this.secondaryPrimaryColor = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.shape,
+      color: AppColors.background,
       height: 56,
       child: Row(
         children: [
@@ -43,6 +45,7 @@ class SetLabelButtons extends StatelessWidget {
             child: LabelButton(
               label: secondaryLabel,
               onPressed: secondaryOnPressed,
+              style: secondaryPrimaryColor ? AppTextStyles.buttonPrimary : null,
             ),
           ),
         ],

@@ -22,19 +22,11 @@ class _ConfigPageState extends State<ConfigPage> {
           preferredSize: Size.fromHeight(size.height * 0.1),
           child: Center(
             child: Container(
-              padding: EdgeInsets.only(right: 20),
-              alignment: AlignmentDirectional.centerEnd,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/home");
-                },
-                icon: Icon(
-                  Icons.close,
+                padding: EdgeInsets.only(right: 20),
+                alignment: AlignmentDirectional.centerEnd,
+                child: BackButton(
                   color: AppColors.heading,
-                  size: 50,
-                ),
-              ),
-            ),
+                )),
           )),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +51,7 @@ class _ConfigPageState extends State<ConfigPage> {
               )),
               child: Center(
                 child: Text(
-                  "Encerra sessão",
+                  "Encerrar sessão",
                   style: AppTextStyles.titleListTile,
                 ),
               ),
@@ -85,7 +77,16 @@ Text(
 
 
 
-
+IconButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, "/home");
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppColors.heading,
+                  size: 50,
+                ),
+              ),
 
 
 

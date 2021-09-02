@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppayflow/shared/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'models/user_model.dart';
 
 class AuthController {
   UserModel? _user;
@@ -15,7 +14,7 @@ class AuthController {
     if (user != null) {
       saveUser(user);
       _user = user;
-      Navigator.pushReplacementNamed(context, "/home");
+      Navigator.pushReplacementNamed(context, "/home", arguments: user);
     } else {
       final instance = await SharedPreferences.getInstance();
       instance.remove("user");

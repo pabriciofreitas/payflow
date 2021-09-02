@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ppayflow/modules/extract/extract_page.dart';
 import 'package:ppayflow/modules/login/login_controller.dart';
+import 'package:ppayflow/modules/meus_boletos/meus_boletos_page.dart';
+import 'package:ppayflow/shared/models/user_model.dart';
 import 'package:ppayflow/shared/themes/app_colors.dart';
 import 'package:ppayflow/shared/themes/app_text_styles.dart';
 
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final UserModel user;
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -15,14 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = HomeController();
   final loginController = LoginController();
-  final pages = [
-    Container(
-      color: Colors.red,
-    ),
-    Container(
-      color: Colors.blue,
-    )
-  ];
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -31,8 +28,16 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(size.height * 0.1871),
         child: Container(
+          decoration: BoxDecoration(
+              color: AppColors.primary,
+              border: Border(
+                bottom: BorderSide(
+                  width: 0,
+                  color: AppColors.primary,
+                ),
+              )),
           height: size.height * 0.1871,
-          color: AppColors.primary,
+          //color: AppColors.primary,
           child: Center(
             child: ListTile(
               title: Text.rich(
@@ -41,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                   style: AppTextStyles.titleRegular,
                   children: [
                     TextSpan(
-                        text: "Pabricio",
+                        text: "${widget.user.name}",
                         style: AppTextStyles.titleBoldBackground)
                   ],
                 ),
@@ -56,15 +61,25 @@ class _HomePageState extends State<HomePage> {
                   height: size.width * 0.128,
                   width: size.width * 0.128,
                   decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(5)),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(5),
+                    image: DecorationImage(
+                        image: NetworkImage(widget.user.photoURL!)),
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-      body: pages[controller.currentPage],
+      body: [
+        MeusBoletosPage(
+          key: UniqueKey(),
+        ),
+        ExtractPage(
+          key: UniqueKey(),
+        ),
+      ][controller.currentPage],
       bottomNavigationBar: Container(
         height: size.height * 0.1834,
         child: Row(
@@ -77,12 +92,15 @@ class _HomePageState extends State<HomePage> {
               },
               icon: Icon(
                 Icons.home,
-                color: AppColors.primary,
+                color: controller.currentPage == 0
+                    ? AppColors.primary
+                    : AppColors.body,
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, "/barcode_scanner");
+              onTap: () async {
+                await Navigator.pushNamed(context, "/barcode_scanner");
+                setState(() {});
               },
               child: Container(
                 height: size.width * 0.1500,
@@ -99,7 +117,12 @@ class _HomePageState extends State<HomePage> {
                 controller.setPage(1);
                 setState(() {});
               },
-              icon: Icon(Icons.description_outlined, color: AppColors.body),
+              icon: Icon(
+                Icons.description_outlined,
+                color: controller.currentPage == 1
+                    ? AppColors.primary
+                    : AppColors.body,
+              ),
             ),
           ],
         ),
